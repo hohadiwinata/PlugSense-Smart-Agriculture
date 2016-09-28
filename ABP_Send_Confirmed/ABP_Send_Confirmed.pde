@@ -107,13 +107,13 @@ uint16_t uartreadrx;
 long unsigned int delayuart;
 bool PrevACK = 0;
 uint8_t error;
+char on[4] = "on";
+char off[5] = "off";
 ////////////////////////////////////////////////////////////
 
 void setup() 
 {
 
- 
-  
   USB.ON();
   USB.println(F("LoRaWAN example - Send Confirmed packets (with ACK)\n"));
 
@@ -198,19 +198,6 @@ void setup()
   //////////////////////////////////////////////
   // 5. Set Application Session Key
   //////////////////////////////////////////////
-  
-//  error = LoRaWAN.setAppKey(APP_KEY);
-//
-//  // Check status
-//  if( error == 0 ) 
-//  {
-//    USB.println(F("5.1 Application Key set OK"));     
-//  }
-//  else 
-//  {
-//    USB.print(F("5. Application Session Key set error = ")); 
-//    USB.println(error, DEC);
-//  }
 
   error = LoRaWAN.setAppSessionKey(APP_SESSION_KEY);
 
@@ -226,7 +213,7 @@ void setup()
   }
   
   //////////////////////////////////////////////
-  // 5.5 Set Data Rate to 2
+  // 5.1 Set Data Rate to 2
   //////////////////////////////////////////////
 
   error = LoRaWAN.setDataRate(DR);
@@ -241,7 +228,7 @@ void setup()
     USB.print(F("5.5 SF set error = ")); 
     USB.println(error, DEC);
   }
-
+  // Set RX2 Parameters
 
   error = LoRaWAN.setRX2Parameters(DR_RX2, RX2_FREQUENCY);
 
@@ -256,6 +243,7 @@ void setup()
     USB.println(error, DEC);
   }
   
+  // Set Power
   error = LoRaWAN.setPower(RADIO_POWER);
 
   // Check status
@@ -268,7 +256,7 @@ void setup()
     USB.print(F("5.5 SF set error = ")); 
     USB.println(error, DEC);
   }
-
+  // Set RX1 Delay 
 
   error = LoRaWAN.setRX1Delay(2000);
 
@@ -283,20 +271,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  
-//    error = LoRaWAN.setRX2Delay(3000);
-//
-//  // Check status
-//  if( error == 0 ) 
-//  {
-//    USB.println(F("5.8 RX2 Delay Set to 3000ms"));     
-//  }
-//  else 
-//  {
-//    USB.print(F("5.5 SF set error = ")); 
-//    USB.println(error, DEC);
-//  }
-  
+  // Set Retries
   error = LoRaWAN.setRetries(2);
 
   // Check status
@@ -307,6 +282,46 @@ void setup()
   else 
   {
     USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  
+  // Set EU default frequency 868.1 MHz in channel 0 off  
+  error = LoRaWAN.setChannelStatus(0, off);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 0 set to off"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set EU default frequency 868.3 MHz in channel 1 off  
+  error = LoRaWAN.setChannelStatus(1, off);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 1 set to off"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set EU default frequency 868.5 MHz in channel 2 off  
+  error = LoRaWAN.setChannelStatus(2, off);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 2 set to off"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status error = ")); 
     USB.println(error, DEC);
   }
 
@@ -470,10 +485,6 @@ void loop()
     
     USB.println("Sending...");
     error = LoRaWAN.sendConfirmed(PORT, output_s);
-    //error = LoRaWAN.sendConfirmed(PORT, "ABC");
-    //USB.println(LoRaWAN.WaspUART._buffer);
-//    WaspUART.beginUART();
-    //USB.println(uartreadrx);
 
     // Error messages:
     /*
