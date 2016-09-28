@@ -40,14 +40,16 @@ uint8_t socket = SOCKET0;
 // Device parameters for Back-End registration
 ////////////////////////////////////////////////////////////
 char DEVICE_EUI[]  = "0011223344556677";
-char APP_KEY[] = "62F534B954C7C136";
+char APP_KEY1[] = "62F534B954C7C136";
+char APP_KEY2[] = "CBA19C03277612DE";
 char DEVICE_ADDR[] = "87654321";
-char NWK_SESSION_KEY[] = "01020304050607080910111213141516 ";
+char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
 char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
-uint32_t RADIO_FREQUENCY = 868000000;
+uint32_t RX2_FREQUENCY = 869500000;
 int8_t RADIO_POWER = 2;
 //uint8_t DR = 2; //SF10 - 980bps
-uint8_t DR = 5; //SF7 - 5470bps
+uint8_t DR = 5; //SF7BW125 - 5470bps
+uint8_t DR_RX2 = 2; //SF10BW125 - 440bps
 ////////////////////////////////////////////////////////////
 
 // Define port to use in Back-End: from 1 to 223
@@ -68,7 +70,7 @@ long  sequenceNumber = 0;
                                                
 char  nodeID[10] = "PS1";              
 
-char* sleepTime = "00:00:01:00";             
+char* sleepTime = "00:00:01:30";             
 
 char data[100]; 
 uint8_t data_uc[100];
@@ -238,18 +240,18 @@ void setup()
   }
 
 
-//  error = LoRaWAN.setRadioFreq(RADIO_FREQUENCY);
-//
-//  // Check status
-//  if( error == 0 ) 
-//  {
-//    USB.println(F("5.6 Radio Frequency set OK"));     
-//  }
-//  else 
-//  {
-//    USB.print(F("5.5 SF set error = ")); 
-//    USB.println(error, DEC);
-//  }
+  error = LoRaWAN.setRX2Parameters(DR_RX2, RX2_FREQUENCY);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.6 RX2 Parameters Set"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
   
   error = LoRaWAN.setPower(RADIO_POWER);
 
@@ -265,18 +267,32 @@ void setup()
   }
 
 
-  error = LoRaWAN.setRX1Delay(1000);
+  error = LoRaWAN.setRX1Delay(2000);
 
   // Check status
   if( error == 0 ) 
   {
-    USB.println(F("5.8 RX1 Delay Set"));     
+    USB.println(F("5.8 RX1 Delay Set to 2000ms"));     
   }
   else 
   {
     USB.print(F("5.5 SF set error = ")); 
     USB.println(error, DEC);
   }
+  
+  
+//    error = LoRaWAN.setRX2Delay(3000);
+//
+//  // Check status
+//  if( error == 0 ) 
+//  {
+//    USB.println(F("5.8 RX2 Delay Set to 3000ms"));     
+//  }
+//  else 
+//  {
+//    USB.print(F("5.5 SF set error = ")); 
+//    USB.println(error, DEC);
+//  }
   
   error = LoRaWAN.setRetries(4);
 
@@ -499,8 +515,8 @@ void loop()
 
 
   USB.println();
-  //PWR.deepSleep(sleepTime,RTC_OFFSET,RTC_ALM1_MODE1,ALL_OFF);
-  delay(20000);
+  PWR.deepSleep(sleepTime,RTC_OFFSET,RTC_ALM1_MODE1,ALL_OFF);
+  //delay(50000);
     //Increase the sequence number after wake up
     sequenceNumber++;
 
