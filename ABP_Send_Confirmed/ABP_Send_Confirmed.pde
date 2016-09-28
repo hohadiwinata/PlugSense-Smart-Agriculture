@@ -27,7 +27,6 @@
  */
 
 #include <WaspLoRaWAN.h>
-#include <WaspUART.h>
 #include <WaspSensorAgr_v20.h>
 
 #define UART_DEBUG 2
@@ -43,6 +42,9 @@ char DEVICE_EUI[]  = "0102030405060708";
 char DEVICE_ADDR[] = "05060708";
 char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
 char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
+uint32_t RADIO_FREQUENCY = 868000000;
+int8_t RADIO_POWER = 1;
+char SF[] = "sf10";
 ////////////////////////////////////////////////////////////
 
 // Define port to use in Back-End: from 1 to 223
@@ -96,10 +98,13 @@ char  TIME_STAMP[3] = "TS";
 
 uint16_t uartreadrx;
 
+long unsigned int delayuart;
+
 
 void setup() 
 {
-  WaspUART LoRaUART;
+
+ 
   
   USB.ON();
   USB.println(F("LoRaWAN example - Send Confirmed packets (with ACK)\n"));
@@ -198,7 +203,64 @@ void setup()
     USB.print(F("5. Application Session Key set error = ")); 
     USB.println(error, DEC);
   }
+  
+  //////////////////////////////////////////////
+  // 5.5 Set Spreading Factor to SF10
+  //////////////////////////////////////////////
 
+  error = LoRaWAN.setRadioSF(SF);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.5 SF set OK"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
+
+
+  error = LoRaWAN.setRadioFreq(RADIO_FREQUENCY);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.6 Radio Frequency set OK"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setRadioPower(RADIO_POWER);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.7 Radio Power set OK"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
+
+  
+  error = LoRaWAN.setRetries(4);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.8 Retries Set for 4"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
 
   //////////////////////////////////////////////
   // 6. Save configuration
@@ -219,7 +281,7 @@ void setup()
 
 
   USB.println(F("\n------------------------------------"));
-  USB.println(F("Module configured"));
+  USB.println(F("Module configured start"));
   USB.println(F("------------------------------------\n"));
 
   LoRaWAN.getDeviceEUI();
@@ -229,6 +291,27 @@ void setup()
   LoRaWAN.getDeviceAddr();
   USB.print(F("Device Address: "));
   USB.println(LoRaWAN._devAddr);  
+  
+  LoRaWAN.getRadioFreq();
+  USB.print(F("Radio Frequency: "));
+  USB.println(LoRaWAN._radioFreq);  
+  
+  LoRaWAN.getRadioPower();
+  USB.print(F("Radio Power: "));
+  USB.println(LoRaWAN._radioPower); 
+ 
+  LoRaWAN.getRadioSF();
+  USB.print(F("Radio Spreading Factor:"));
+  USB.println(LoRaWAN._radioSF);   
+  
+  LoRaWAN.getRadioPower();
+  USB.print(F("Radio Power:"));
+  USB.println(LoRaWAN._radioPower); 
+  
+  
+  USB.println(F("\n------------------------------------"));
+  USB.println(F("Module configured end"));
+  USB.println(F("------------------------------------\n"));
 
   USB.println();  
 }
@@ -315,7 +398,9 @@ void loop()
     // 3. Send confirmed packet 
     //////////////////////////////////////////////
     USB.println("Sending...");
-    error = LoRaWAN.sendConfirmed( PORT, output_s);
+    error = LoRaWAN.sendConfirmed(PORT, output_s);
+    //error = LoRaWAN.sendConfirmed(PORT, "ABC");
+    //USB.println(LoRaWAN.WaspUART._buffer);
 //    WaspUART.beginUART();
     //USB.println(uartreadrx);
 
