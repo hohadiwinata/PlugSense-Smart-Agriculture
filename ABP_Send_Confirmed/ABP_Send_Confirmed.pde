@@ -252,6 +252,8 @@ void loop()
   
     //Turn on the sensor board
     SensorAgrv20.ON();
+    //Turn on the RTC
+    RTC.ON();
     //supply stabilization delay
     delay(100);
  
@@ -282,6 +284,7 @@ void loop()
 	nodeID ,
 	sequenceNumber,
 	BATTERY, batteryLevelString,
+        //TIME_STAMP, RTC.getTimestamp(),
 	CONNECTOR_C , connectorCString);
     
     USB.println(data);
@@ -361,9 +364,9 @@ void loop()
 
 
   USB.println();
+  PWR.deepSleep(sleepTime,RTC_OFFSET,RTC_ALM1_MODE1,ALL_OFF);
 
-
-    delay(10000);
+    //Increase the sequence number after wake up
     sequenceNumber++;
 
 
