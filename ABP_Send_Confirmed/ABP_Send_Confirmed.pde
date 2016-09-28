@@ -56,7 +56,6 @@ uint8_t DR_RX2 = 2; //SF10BW125 - 440bps
 uint8_t PORT = 3;
 
 // Define data payload to send (maximum is up to data rate)
-uint8_t error;
 
 // Generated variable
 char  CONNECTOR_A[3] = "CA";                   
@@ -70,7 +69,7 @@ long  sequenceNumber = 0;
                                                
 char  nodeID[10] = "PS1";              
 
-char* sleepTime = "00:00:01:30";             
+char* sleepTime = "00:00:30:00";             
 
 char data[100]; 
 uint8_t data_uc[100];
@@ -101,10 +100,14 @@ char  batteryLevelString[10];
 char  BATTERY[4] = "BAT";
 char  TIME_STAMP[3] = "TS";
 
+
+// User variable
+////////////////////////////////////////////////////////////
 uint16_t uartreadrx;
-
 long unsigned int delayuart;
-
+bool PrevACK = 0;
+uint8_t error;
+////////////////////////////////////////////////////////////
 
 void setup() 
 {
@@ -294,7 +297,7 @@ void setup()
 //    USB.println(error, DEC);
 //  }
   
-  error = LoRaWAN.setRetries(4);
+  error = LoRaWAN.setRetries(2);
 
   // Check status
   if( error == 0 ) 
@@ -353,14 +356,14 @@ void setup()
   USB.print(F("Adaptive Data Rate:"));
   USB.println(LoRaWAN._adr); 
   
-//  LoRaWAN.getRadioCRC();
-//  USB.print(F("Radio CRC Status:"));
-//  USB.println(LoRaWAN._crcStatus); 
-
-//  LoRaWAN.getRadioRSSI();
-//  USB.print(F("Radio CRC Status:"));
-//  USB.println(LoRaWAN._crcStatus); 
-
+  LoRaWAN.getUpCounter();
+  USB.print(F("Up Counter:"));
+  USB.println(LoRaWAN._upCounter); 
+  
+  LoRaWAN.getDownCounter();
+  USB.print(F("Down Counter:"));
+  USB.println(LoRaWAN._downCounter); 
+  
   
   
   USB.println(F("\n------------------------------------"));
@@ -423,12 +426,13 @@ void loop()
     SensorAgrv20.setSensorMode(SENS_OFF, SENS_AGR_TEMP_DS18B20);
     
     //Data payload composition
-     sprintf(data,"{I:%s,N:%li,%s:%s,%s:%s}",
+     sprintf(data,"{I:%s,N:%li,%s:%s,%s:%s,PA:%d}",
 	nodeID ,
 	sequenceNumber,
 	BATTERY, batteryLevelString,
         //TIME_STAMP, RTC.getTimestamp(),
-	CONNECTOR_C , connectorCString);
+	CONNECTOR_C , connectorCString,
+        PrevACK );
     
     USB.println(data);
     strcpy( (char*) data_uc, data);
@@ -476,6 +480,7 @@ void loop()
       USB.println(F("3. Send Confirmed packet OK"));     
       if (LoRaWAN._dataReceived == true)
       { 
+        PrevACK = 1;
         USB.print(F("   There's data on port number "));
         USB.print(LoRaWAN._port,DEC);
         USB.print(F(".\r\n   Data: "));
@@ -484,6 +489,7 @@ void loop()
     }
     else 
     {
+      PrevACK = 0;
       USB.print(F("3. Send Confirmed packet error = ")); 
       USB.println(error, DEC);
     }   
@@ -491,6 +497,7 @@ void loop()
   
   else 
   {
+    PrevACK = 0;
     USB.print(F("2. Join network error = ")); 
     USB.println(error, DEC);
   }
