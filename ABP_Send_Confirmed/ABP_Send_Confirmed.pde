@@ -39,13 +39,15 @@ uint8_t socket = SOCKET0;
 
 // Device parameters for Back-End registration
 ////////////////////////////////////////////////////////////
-char DEVICE_EUI[]  = "0102030405060708";
-char DEVICE_ADDR[] = "05060708";
-char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
+char DEVICE_EUI[]  = "0011223344556677";
+char APP_KEY[] = "62F534B954C7C136";
+char DEVICE_ADDR[] = "87654321";
+char NWK_SESSION_KEY[] = "01020304050607080910111213141516 ";
 char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
 uint32_t RADIO_FREQUENCY = 868000000;
 int8_t RADIO_POWER = 2;
-uint8_t DR = 2; //SF10 - 980bps
+//uint8_t DR = 2; //SF10 - 980bps
+uint8_t DR = 5; //SF7 - 5470bps
 ////////////////////////////////////////////////////////////
 
 // Define port to use in Back-End: from 1 to 223
@@ -191,6 +193,19 @@ void setup()
   //////////////////////////////////////////////
   // 5. Set Application Session Key
   //////////////////////////////////////////////
+  
+//  error = LoRaWAN.setAppKey(APP_KEY);
+//
+//  // Check status
+//  if( error == 0 ) 
+//  {
+//    USB.println(F("5.1 Application Key set OK"));     
+//  }
+//  else 
+//  {
+//    USB.print(F("5. Application Session Key set error = ")); 
+//    USB.println(error, DEC);
+//  }
 
   error = LoRaWAN.setAppSessionKey(APP_SESSION_KEY);
 
@@ -249,6 +264,19 @@ void setup()
     USB.println(error, DEC);
   }
 
+
+  error = LoRaWAN.setRX1Delay(1000);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("5.8 RX1 Delay Set"));     
+  }
+  else 
+  {
+    USB.print(F("5.5 SF set error = ")); 
+    USB.println(error, DEC);
+  }
   
   error = LoRaWAN.setRetries(4);
 
@@ -403,11 +431,14 @@ void loop()
   // Check status
   if( error == 0 ) 
   {
-    USB.println(F("2. Join network OK"));  
+    USB.println(F("2. Join network OK")); 
+    delay(10000); 
 
     //////////////////////////////////////////////
     // 3. Send confirmed packet 
     //////////////////////////////////////////////
+    
+    
     USB.println("Sending...");
     error = LoRaWAN.sendConfirmed(PORT, output_s);
     //error = LoRaWAN.sendConfirmed(PORT, "ABC");
