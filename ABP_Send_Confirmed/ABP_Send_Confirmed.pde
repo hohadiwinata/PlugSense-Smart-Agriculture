@@ -228,8 +228,8 @@ void setup()
     USB.print(F("5.5 SF set error = ")); 
     USB.println(error, DEC);
   }
-
   // Set RX2 Parameters
+
   error = LoRaWAN.setRX2Parameters(DR_RX2, RX2_FREQUENCY);
 
   // Check status
@@ -256,8 +256,8 @@ void setup()
     USB.print(F("5.5 SF set error = ")); 
     USB.println(error, DEC);
   }
-
   // Set RX1 Delay 
+
   error = LoRaWAN.setRX1Delay(2000);
 
   // Check status
@@ -324,56 +324,7 @@ void setup()
     USB.print(F("Set Channel Status error = ")); 
     USB.println(error, DEC);
   }
-  
-  // Set channel 3 frequency to 865.0 MHz
-  error = LoRaWAN.setChannelFreq(3, 865000000);
 
-  if( error == 0 ) 
-  {
-    USB.println(F("Channel 3 set to 865Mhz"));     
-  }
-  else 
-  {
-    USB.print(F("Set Channel Status error = ")); 
-    USB.println(error, DEC);
-  }
-  
-  // Set channel 3 duty cycle, DR range, and switch on
-  error = LoRaWAN.setChannelDutyCycle(3, 0);
-
-  if( error == 0 ) 
-  {
-    USB.println(F("Channel 3 set Duty Cycle"));     
-  }
-  else 
-  {
-    USB.print(F("Set Channel Status error = ")); 
-    USB.println(error, DEC);
-  }
-  
-  error = LoRaWAN.setChannelDRRange(3, 0, 5);
-
-  if( error == 0 ) 
-  {
-    USB.println(F("Channel 3 set DR Range"));     
-  }
-  else 
-  {
-    USB.print(F("Set Channel Status error = ")); 
-    USB.println(error, DEC);
-  }
-  
-  error = LoRaWAN.setChannelStatus(3, on);
-
-  if( error == 0 ) 
-  {
-    USB.println(F("Channel 3 set to off"));     
-  }
-  else 
-  {
-    USB.print(F("Set Channel Status error = ")); 
-    USB.println(error, DEC);
-  }
   //////////////////////////////////////////////
   // 6. Save configuration
   //////////////////////////////////////////////
