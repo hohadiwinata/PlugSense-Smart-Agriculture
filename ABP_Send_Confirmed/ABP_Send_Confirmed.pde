@@ -408,6 +408,8 @@ void loop()
     SensorAgrv20.setSensorMode(SENS_ON, SENS_AGR_TEMP_DS18B20);
     delay(1000);
     
+    SensorAgrv20.setSensorMode(SENS_ON, SENS_AGR_WATERMARK_1);
+    delay(100);
     // Read the sensors
 
     // First dummy reading for analog-to-digital converter channel selection
@@ -422,16 +424,23 @@ void loop()
     //Conversion into a string
     Utils.float2String(connectorCFloatValue, connectorCString, 2);
     
+    //Sensor moisture reading
+    connectorFFloatValue = SensorAgrv20.readValue(SENS_AGR_WATERMARK_1);
+    //Conversion into a string
+    Utils.float2String(connectorFFloatValue, connectorFString, 2);
+    
     //Turn off the sensors
     SensorAgrv20.setSensorMode(SENS_OFF, SENS_AGR_TEMP_DS18B20);
+    SensorAgrv20.setSensorMode(SENS_OFF, SENS_AGR_WATERMARK_1);
     
     //Data payload composition
-     sprintf(data,"{I:%s,N:%li,%s:%s,%s:%s,PA:%d}",
+     sprintf(data,"{I:%s,N:%li,%s:%s,%s:%s,%s:%s,PA:%d}",
 	nodeID ,
 	sequenceNumber,
 	BATTERY, batteryLevelString,
         //TIME_STAMP, RTC.getTimestamp(),
 	CONNECTOR_C , connectorCString,
+        CONNECTOR_F , connectorFString,
         PrevACK );
     
     USB.println(data);
@@ -478,9 +487,9 @@ void loop()
     if( error == 0 ) 
     {
       USB.println(F("3. Send Confirmed packet OK"));     
+      PrevACK = 1;
       if (LoRaWAN._dataReceived == true)
       { 
-        PrevACK = 1;
         USB.print(F("   There's data on port number "));
         USB.print(LoRaWAN._port,DEC);
         USB.print(F(".\r\n   Data: "));

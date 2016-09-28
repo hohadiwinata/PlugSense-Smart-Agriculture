@@ -18,15 +18,15 @@ $RECYCLE.BIN/
 *.lnk
 
 # Image file
-.png
+*.png
 
 # Log file
-.txt
-.log
-.pdf
+*.txt
+*.log
+*.pdf
 
 # Video file
-.mp4
+*.mp4
 
 # =========================
 # Operating System Files
