@@ -30,6 +30,7 @@
 #include <WaspSensorAgr_v20.h>
 
 #define UART_DEBUG 2
+#define SOCKET0 0
 
 // socket to use
 //////////////////////////////////////////////
@@ -43,8 +44,8 @@ char DEVICE_ADDR[] = "05060708";
 char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
 char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
 uint32_t RADIO_FREQUENCY = 868000000;
-int8_t RADIO_POWER = 1;
-char SF[] = "sf10";
+int8_t RADIO_POWER = 2;
+uint8_t DR = 2; //SF10 - 980bps
 ////////////////////////////////////////////////////////////
 
 // Define port to use in Back-End: from 1 to 223
@@ -205,15 +206,15 @@ void setup()
   }
   
   //////////////////////////////////////////////
-  // 5.5 Set Spreading Factor to SF10
+  // 5.5 Set Data Rate to 2
   //////////////////////////////////////////////
 
-  error = LoRaWAN.setRadioSF(SF);
+  error = LoRaWAN.setDataRate(DR);
 
   // Check status
   if( error == 0 ) 
   {
-    USB.println(F("5.5 SF set OK"));     
+    USB.println(F("5.5 Data Rate set OK"));     
   }
   else 
   {
@@ -222,20 +223,20 @@ void setup()
   }
 
 
-  error = LoRaWAN.setRadioFreq(RADIO_FREQUENCY);
-
-  // Check status
-  if( error == 0 ) 
-  {
-    USB.println(F("5.6 Radio Frequency set OK"));     
-  }
-  else 
-  {
-    USB.print(F("5.5 SF set error = ")); 
-    USB.println(error, DEC);
-  }
+//  error = LoRaWAN.setRadioFreq(RADIO_FREQUENCY);
+//
+//  // Check status
+//  if( error == 0 ) 
+//  {
+//    USB.println(F("5.6 Radio Frequency set OK"));     
+//  }
+//  else 
+//  {
+//    USB.print(F("5.5 SF set error = ")); 
+//    USB.println(error, DEC);
+//  }
   
-  error = LoRaWAN.setRadioPower(RADIO_POWER);
+  error = LoRaWAN.setPower(RADIO_POWER);
 
   // Check status
   if( error == 0 ) 
@@ -292,21 +293,30 @@ void setup()
   USB.print(F("Device Address: "));
   USB.println(LoRaWAN._devAddr);  
   
-  LoRaWAN.getRadioFreq();
+  LoRaWAN.getChannelFreq(0);
   USB.print(F("Radio Frequency: "));
-  USB.println(LoRaWAN._radioFreq);  
+  USB.println(LoRaWAN._freq[0]);  
   
-  LoRaWAN.getRadioPower();
+  LoRaWAN.getPower();
   USB.print(F("Radio Power: "));
-  USB.println(LoRaWAN._radioPower); 
+  USB.println(LoRaWAN._powerIndex); 
  
-  LoRaWAN.getRadioSF();
-  USB.print(F("Radio Spreading Factor:"));
-  USB.println(LoRaWAN._radioSF);   
+  LoRaWAN.getDataRate();
+  USB.print(F("Data Rate:"));
+  USB.printHex(LoRaWAN._dataRate);   
   
-  LoRaWAN.getRadioPower();
-  USB.print(F("Radio Power:"));
-  USB.println(LoRaWAN._radioPower); 
+  LoRaWAN.getADR();
+  USB.print(F("Adaptive Data Rate:"));
+  USB.println(LoRaWAN._adr); 
+  
+//  LoRaWAN.getRadioCRC();
+//  USB.print(F("Radio CRC Status:"));
+//  USB.println(LoRaWAN._crcStatus); 
+
+//  LoRaWAN.getRadioRSSI();
+//  USB.print(F("Radio CRC Status:"));
+//  USB.println(LoRaWAN._crcStatus); 
+
   
   
   USB.println(F("\n------------------------------------"));
@@ -314,6 +324,7 @@ void setup()
   USB.println(F("------------------------------------\n"));
 
   USB.println();  
+
 }
 
 
@@ -341,7 +352,7 @@ void loop()
     //Turn on the sensor board
     SensorAgrv20.ON();
     //Turn on the RTC
-    RTC.ON();
+    //RTC.ON();
     //supply stabilization delay
     delay(100);
  
@@ -430,6 +441,7 @@ void loop()
       USB.println(error, DEC);
     }   
   }
+  
   else 
   {
     USB.print(F("2. Join network error = ")); 
@@ -456,8 +468,8 @@ void loop()
 
 
   USB.println();
-  PWR.deepSleep(sleepTime,RTC_OFFSET,RTC_ALM1_MODE1,ALL_OFF);
-
+  //PWR.deepSleep(sleepTime,RTC_OFFSET,RTC_ALM1_MODE1,ALL_OFF);
+  delay(20000);
     //Increase the sequence number after wake up
     sequenceNumber++;
 
