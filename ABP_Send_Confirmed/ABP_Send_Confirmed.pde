@@ -27,6 +27,7 @@
  */
 
 #include <WaspLoRaWAN.h>
+#include <WaspUART.h>
 #include <WaspSensorAgr_v20.h>
 
 #define UART_DEBUG 2
@@ -62,7 +63,7 @@ long  sequenceNumber = 0;
                                                
 char  nodeID[10] = "PS1";              
 
-char* sleepTime = "00:00:00:30";             
+char* sleepTime = "00:00:01:00";             
 
 char data[100]; 
 uint8_t data_uc[100];
@@ -93,9 +94,13 @@ char  batteryLevelString[10];
 char  BATTERY[4] = "BAT";
 char  TIME_STAMP[3] = "TS";
 
+uint16_t uartreadrx;
+
 
 void setup() 
 {
+  WaspUART LoRaUART;
+  
   USB.ON();
   USB.println(F("LoRaWAN example - Send Confirmed packets (with ACK)\n"));
 
@@ -311,6 +316,8 @@ void loop()
     //////////////////////////////////////////////
     USB.println("Sending...");
     error = LoRaWAN.sendConfirmed( PORT, output_s);
+//    WaspUART.beginUART();
+    //USB.println(uartreadrx);
 
     // Error messages:
     /*
