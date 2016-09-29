@@ -45,11 +45,11 @@ char APP_KEY2[] = "CBA19C03277612DE";
 char DEVICE_ADDR[] = "87654321";
 char NWK_SESSION_KEY[] = "01020304050607080910111213141516";
 char APP_SESSION_KEY[] = "000102030405060708090A0B0C0D0E0F";
-uint32_t RX2_FREQUENCY = 869500000;
+uint32_t RX2_FREQUENCY = 867200000;
 int8_t RADIO_POWER = 2;
 //uint8_t DR = 2; //SF10 - 980bps
 uint8_t DR = 5; //SF7BW125 - 5470bps
-uint8_t DR_RX2 = 2; //SF10BW125 - 440bps
+uint8_t DR_RX2 = 3; //SF10BW125 - 440bps
 ////////////////////////////////////////////////////////////
 
 // Define port to use in Back-End: from 1 to 223
@@ -215,33 +215,6 @@ void setup()
   //////////////////////////////////////////////
   // 6 User Defined Setting
   //////////////////////////////////////////////
-
-  error = LoRaWAN.setDataRate(DR);
-
-  // Check status
-  if( error == 0 ) 
-  {
-    USB.println(F("5.5 Data Rate set OK"));     
-  }
-  else 
-  {
-    USB.print(F("5.5 SF set error = ")); 
-    USB.println(error, DEC);
-  }
-
-  // Set RX2 Parameters
-  error = LoRaWAN.setRX2Parameters(DR_RX2, RX2_FREQUENCY);
-
-  // Check status
-  if( error == 0 ) 
-  {
-    USB.println(F("5.6 RX2 Parameters Set"));     
-  }
-  else 
-  {
-    USB.print(F("5.5 SF set error = ")); 
-    USB.println(error, DEC);
-  }
   
   // Set Power
   error = LoRaWAN.setPower(RADIO_POWER);
@@ -488,17 +461,17 @@ void setup()
     USB.println(error, DEC);
   }
   
-// Set channel 6 frequency to 865.6 MHz
+// Set channel 6 frequency to 866.2 MHz
 //---------------------------------------
-  error = LoRaWAN.setChannelFreq(6, 865600000);
+  error = LoRaWAN.setChannelFreq(6, 866200000);
 
   if( error == 0 ) 
   {
-    USB.println(F("Channel 6 set to 865.6 Mhz"));     
+    USB.println(F("Channel 6 set to 866.2 Mhz"));     
   }
   else 
   {
-    USB.print(F("Set Channel 6 to 865.6 Mhz error = ")); 
+    USB.print(F("Set Channel 6 to 866.2 Mhz error = ")); 
     USB.println(error, DEC);
   }
   
@@ -539,6 +512,229 @@ void setup()
     USB.print(F("Set Channel Status to ON error = ")); 
     USB.println(error, DEC);
   }
+  
+  // Set channel 7 frequency to 866.4 MHz
+//---------------------------------------
+  error = LoRaWAN.setChannelFreq(7, 866400000);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 7 set to 866.4 Mhz"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel 7 to 866.4 Mhz error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set channel 7 duty cycle, DR range, and switch on
+  //---------------------------------------------------
+  error = LoRaWAN.setChannelDutyCycle(7, 0);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 7 set Duty Cycle"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Duty Cycle error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelDRRange(7, 0, 5);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 7 set DR Range"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel DR Range error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelStatus(7, on);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 7 set to ON"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status to ON error = ")); 
+    USB.println(error, DEC);
+  }
+  
+// Set channel 8 frequency to 866.6 MHz
+//---------------------------------------
+  error = LoRaWAN.setChannelFreq(8, 866600000);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 8 set to 866.6 Mhz"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel 8 to 866.6 Mhz error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set channel 8 duty cycle, DR range, and switch on
+  //---------------------------------------------------
+  error = LoRaWAN.setChannelDutyCycle(8, 0);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 8 set Duty Cycle"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Duty Cycle error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelDRRange(8, 0, 5);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 8 set DR Range"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel DR Range error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelStatus(8, on);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 8 set to ON"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status to ON error = ")); 
+    USB.println(error, DEC);
+  }
+
+// Set channel 9 frequency to 866.8 MHz
+//---------------------------------------
+  error = LoRaWAN.setChannelFreq(9, 866800000);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 9 set to 866.8 Mhz"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel 9 to 866.8 Mhz error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set channel 9 duty cycle, DR range, and switch on
+  //---------------------------------------------------
+  error = LoRaWAN.setChannelDutyCycle(9, 0);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 9 set Duty Cycle"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Duty Cycle error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelDRRange(9, 0, 5);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 9 set DR Range"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel DR Range error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelStatus(9, on);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 9 set to ON"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status to ON error = ")); 
+    USB.println(error, DEC);
+  }
+
+// Set channel 10 frequency to 867 MHz
+//---------------------------------------
+  error = LoRaWAN.setChannelFreq(10, 867000000);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 10 set to 867 Mhz"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel 10 to 867 Mhz error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  // Set channel 10 duty cycle, DR range, and switch on
+  //---------------------------------------------------
+  error = LoRaWAN.setChannelDutyCycle(10, 0);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 10 set Duty Cycle"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Duty Cycle error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelDRRange(10, 0, 5);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 10 set DR Range"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel DR Range error = ")); 
+    USB.println(error, DEC);
+  }
+  
+  error = LoRaWAN.setChannelStatus(10, on);
+
+  if( error == 0 ) 
+  {
+    USB.println(F("Channel 10 set to ON"));     
+  }
+  else 
+  {
+    USB.print(F("Set Channel Status to ON error = ")); 
+    USB.println(error, DEC);
+  }  
+  
+  // Set RX2 Parameters
+  error = LoRaWAN.setRX2Parameters(DR_RX2, RX2_FREQUENCY);
+
+  // Check status
+  if( error == 0 ) 
+  {
+    USB.println(F("RX2 Parameters Set"));     
+  }
+  else 
+  {
+    USB.print(F("Set RX2 Parameter error = ")); 
+    USB.println(error, DEC);
+  }
+
  
   //////////////////////////////////////////////
   // 8. Save configuration
