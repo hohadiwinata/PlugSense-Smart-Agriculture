@@ -115,7 +115,7 @@ void setup()
 {
 
   USB.ON();
-  USB.println(F("Plug & Sense Smart Agriculture - New Zealand Channel - Rev 19"));
+  USB.println(F("Plug & Sense Smart Agriculture - New Zealand Channel - Rev 20"));
 
 
   USB.println(F("------------------------------------"));
@@ -389,7 +389,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  error = LoRaWAN.setChannelDRRange(3, 2, 5);
+  error = LoRaWAN.setChannelDRRange(3, 3, 5);
 
   if( error == 0 ) 
   {
@@ -431,7 +431,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  error = LoRaWAN.setChannelDRRange(4, 2, 5);
+  error = LoRaWAN.setChannelDRRange(4, 3, 5);
 
   if( error == 0 ) 
   {
@@ -483,7 +483,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  error = LoRaWAN.setChannelDRRange(5, 2, 5);
+  error = LoRaWAN.setChannelDRRange(5, 3, 5);
 
   if( error == 0 ) 
   {
@@ -536,7 +536,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  error = LoRaWAN.setChannelDRRange(6, 2, 5);
+  error = LoRaWAN.setChannelDRRange(6, 3, 5);
 
   if( error == 0 ) 
   {
@@ -588,7 +588,7 @@ void setup()
     USB.println(error, DEC);
   }
   
-  error = LoRaWAN.setChannelDRRange(7, 2, 5);
+  error = LoRaWAN.setChannelDRRange(7, 3, 5);
 
   if( error == 0 ) 
   {
@@ -641,7 +641,7 @@ void setup()
 //    USB.print(F("5.5 SF set error = ")); 
 //    USB.println(error, DEC);
 //  }
- 
+// 
   //////////////////////////////////////////////
   // 8. Save configuration
   //////////////////////////////////////////////
