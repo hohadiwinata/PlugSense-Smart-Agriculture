@@ -69,7 +69,7 @@ long  sequenceNumber = 0;
                                                
 char  nodeID[10] = "PS1";              
 
-char* sleepTime = "00:00:10:00";             
+char* sleepTime = "00:00:20:00";             
 
 char data[100]; 
 uint8_t data_uc[100];
